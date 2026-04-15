@@ -1,0 +1,27 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - CFTC_APP_TOKEN=${CFTC_APP_TOKEN}
+    expose:
+      - "7750"
+    deploy:
+      replicas: 2
+
+  proxy:
+    image: nginx:alpine
+    command:
+      - /bin/sh
+      - -c
+      - |
+        echo '0 20 * * 5 rm -rf /dev/shm/cache/* && nginx -s reload' | crontab - &&
+        crond &&
+        nginx -g 'daemon off;'
+    ports:
+      - "80:80"
+    volumes:
+      - ./cftc-nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api
