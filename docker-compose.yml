@@ -1,0 +1,9 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - CFTC_APP_TOKEN=${CFTC_APP_TOKEN}
+    ports:
+      - "${PORT:-7750}:7750"

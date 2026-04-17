@@ -12,13 +12,15 @@ docker run --rm -p 7750:7750 -e CFTC_APP_TOKEN=<your_token> cftc-app
 
 The API will be available at `http://localhost:7750`.
 
-### With Nginx (caching + CORS)
+### With Docker Compose
 
 ```bash
 CFTC_APP_TOKEN=<your_token> docker compose -f docker-compose.cftc.yml up --build
 ```
 
-This starts two API replicas behind an Nginx reverse proxy with response caching and CORS headers. The API will be available at `http://localhost` (port 80).
+The API will be available at `http://localhost` (port 80).
+
+CORS and caching are handled at the application level. GET 200 responses to `/api/v1/cftc/cot` include a `Cache-Control: public, max-age=604800` header (7 days).
 
 
 ## Deployment

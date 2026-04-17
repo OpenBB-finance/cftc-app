@@ -1,0 +1,20 @@
+{
+    "api_settings": {
+        "version": "1",
+        "cors": {
+            "allow_origins": [
+                "http://localhost:7750",
+                "https://pro.openbb.dev",
+                "https://pro.openbb.co"
+            ],
+            "allow_methods": [
+                "OPTIONS",
+                "GET"
+            ],
+            "allow_headers": [
+                "*"
+            ]
+        },
+        "prefix": "/api/v1"
+    }
+}
