@@ -17,12 +17,19 @@ def write_user_settings():
 write_user_settings()
 
 from fastapi import Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from openbb_platform_api.main import app, launch_api
 from starlette.middleware.base import BaseHTTPMiddleware
 
 CACHE_PATHS = {"/api/v1/cftc/cot"}
 MAX_AGE = 604800  # 7 days
+
+STATIC_DIR = Path(__file__).parent / "static"
+PUBLIC_STATIC_FILES = {
+    "openbb-logo.svg": ("openbb-logo.svg", "image/svg+xml"),
+    "openbb-cftc-screenshot1.png": ("openbb-cftc-screenshot1.png", "image/png"),
+    "openbb-cftc-screenshot2.png": ("openbb-cftc-screenshot2.png", "image/png"),
+}
 
 
 @app.middleware("http")
@@ -39,9 +46,14 @@ async def add_cache_control(request, call_next):
 
 class RequireOpenBBUserMiddleware(BaseHTTPMiddleware):
     _EXEMPT_PATHS = {"/health", "/"}
+    _EXEMPT_PREFIXES = ("/static/",)
 
     async def dispatch(self, request: Request, call_next):
-        if request.method == "OPTIONS" or request.url.path in self._EXEMPT_PATHS:
+        if (
+            request.method == "OPTIONS"
+            or request.url.path in self._EXEMPT_PATHS
+            or any(request.url.path.startswith(p) for p in self._EXEMPT_PREFIXES)
+        ):
             return await call_next(request)
         if not request.headers.get("x-openbb-user"):
             return JSONResponse(
@@ -56,6 +68,15 @@ app.add_middleware(RequireOpenBBUserMiddleware)
 @app.get("/health")
 async def health():
     return {"status": "ok"}
+
+
+@app.get("/static/{filename}")
+def serve_static(filename: str):
+    entry = PUBLIC_STATIC_FILES.get(filename)
+    if entry is None:
+        return JSONResponse({"detail": "Not found"}, status_code=404)
+    name, media_type = entry
+    return FileResponse(STATIC_DIR / name, media_type=media_type)
 
 
 if __name__ == "__main__":

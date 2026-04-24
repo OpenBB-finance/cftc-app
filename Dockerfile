@@ -9,6 +9,7 @@ COPY *.whl .
 RUN pip install *.whl && rm -f *.whl
 
 COPY start.py .
+COPY static ./static
 COPY system_settings.json /home/openbb/.openbb_platform/system_settings.json
 RUN chown -R openbb:openbb /home/openbb/.openbb_platform
 
