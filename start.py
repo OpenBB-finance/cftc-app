@@ -45,7 +45,7 @@ async def add_cache_control(request, call_next):
 
 
 class RequireOpenBBUserMiddleware(BaseHTTPMiddleware):
-    _EXEMPT_PATHS = {"/health", "/"}
+    _EXEMPT_PATHS = {"/health", "/", "/widgets.json", "/apps.json"}
     _EXEMPT_PREFIXES = ("/static/",)
 
     async def dispatch(self, request: Request, call_next):
