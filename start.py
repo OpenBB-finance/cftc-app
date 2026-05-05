@@ -26,7 +26,7 @@ MAX_AGE = 604800  # 7 days
 
 STATIC_DIR = Path(__file__).parent / "static"
 PUBLIC_STATIC_FILES = {
-    "openbb-logo.svg": ("openbb-logo.svg", "image/svg+xml"),
+    "openbb-logo.svg": ("openbb-logo.png", "image/png"),
     "openbb-cftc-screenshot1.png": ("openbb-cftc-screenshot1.png", "image/png"),
     "openbb-cftc-screenshot2.png": ("openbb-cftc-screenshot2.png", "image/png"),
 }
