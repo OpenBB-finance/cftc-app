@@ -29,6 +29,7 @@ PUBLIC_STATIC_FILES = {
     "openbb-logo.svg": ("openbb-logo.png", "image/png"),
     "openbb-cftc-screenshot1.png": ("openbb-cftc-screenshot1.png", "image/png"),
     "openbb-cftc-screenshot2.png": ("openbb-cftc-screenshot2.png", "image/png"),
+    "CFTC_cover.png": ("CFTC_cover.png", "image/png"),
 }
 
 
