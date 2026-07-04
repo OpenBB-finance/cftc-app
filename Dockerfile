@@ -4,9 +4,8 @@ RUN useradd -m -s /bin/bash openbb
 
 WORKDIR /app
 
-COPY *.whl .
-
-RUN pip install *.whl && rm -f *.whl
+RUN pip install --no-cache-dir --upgrade pip \
+	&& pip install --no-cache-dir openbb-cftc openbb-core openbb-platform-api
 
 COPY start.py .
 COPY static ./static
